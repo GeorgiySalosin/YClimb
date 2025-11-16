@@ -18,6 +18,7 @@ namespace YClimb.Controls
     /// <summary>
     /// Логика взаимодействия для Ctrl_LogIn.xaml
     /// </summary>
+    /// 
     public partial class Ctrl_SignUp : UserControl
     {
         public Ctrl_SignUp()
@@ -33,7 +34,17 @@ namespace YClimb.Controls
             uc_password_confirm.Content = new Ctrl_TextField("Confirm Password");
         }
 
-        private void ValidateInput()
+        private string GetNickName()
+        {
+            return ((Ctrl_TextField)uc_nickname.Content).TB.Text;
+        }
+
+        private string GetPassword()
+        {
+            return ((Ctrl_TextField)uc_password.Content).TB.Text;
+        }
+
+        private bool ValidateInput()
         {
             try
             {
@@ -41,16 +52,18 @@ namespace YClimb.Controls
                 string password = ((Ctrl_TextField)uc_password.Content).TB.Text;
                 if (login != string.Empty && password != string.Empty)
                 {
-                    //MainWindow.Instance.CurrentControl.Content = new UserControlLoggedInPage(login, password);
-                    MessageBox.Show("Logged In");
+                    return true;
                 }
             }
             catch { }
+            return false;
         }
 
         private void ButtonConfirmSignUpClick(object sender, RoutedEventArgs e)
         {
-            
+            if (ValidateInput()) MainWindow.Instance.CurrentControl.Content = new Ctrl_LogIn(GetNickName(), GetPassword()); 
         }
     }
+
+
 }

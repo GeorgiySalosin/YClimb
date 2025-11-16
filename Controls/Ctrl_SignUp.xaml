@@ -13,8 +13,10 @@
             Width="320" Height="440" Grid.Column="1">
         <StackPanel 
             Style="{StaticResource StackPanelBase}">
+            
             <UserControl Margin="0" x:Name="uc_nickname"
                             Height="Auto" HorizontalAlignment="Center"/>
+
 
             <UserControl x:Name="uc_email"
                             Height="Auto" HorizontalAlignment="Center"/>

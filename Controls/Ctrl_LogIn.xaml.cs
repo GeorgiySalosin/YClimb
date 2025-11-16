@@ -29,6 +29,12 @@ namespace YClimb.Controls
             uc_password.Content = new Ctrl_TextField("Password");
         }
 
+        public Ctrl_LogIn(string nickname, string password): this()
+        {
+            ((Ctrl_TextField)uc_login.Content).TB.Text = nickname;
+            ((Ctrl_TextField)uc_password.Content).TB.Text = password;
+        }
+
         private void ButtonSignInClick(object sender, RoutedEventArgs e)
         {
             try

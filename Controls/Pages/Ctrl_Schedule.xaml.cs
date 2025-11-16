@@ -23,6 +23,7 @@ namespace YClimb.Controls
         public Ctrl_Schedule()
         {
             InitializeComponent();
+            page_data.Content = new Common.Ctrl_EmptyPage();
         }
 
         private void Button_Feed_Click(object sender, RoutedEventArgs e)
