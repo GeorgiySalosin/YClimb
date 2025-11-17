@@ -23,6 +23,7 @@ namespace YClimb.Controls
         public Ctrl_Feed()
         {
             InitializeComponent();
+            PageData.Content = new Common.Ctrl_FeedPost();
         }
 
         

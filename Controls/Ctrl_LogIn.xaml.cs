@@ -43,7 +43,7 @@ namespace YClimb.Controls
                 string password = ((Ctrl_TextField)uc_password.Content).TB.Text;
                 if (login != string.Empty && password != string.Empty)
                 {
-                    MainWindow.Instance.CurrentControl.Content = new Ctrl_Feed();
+                    MainWindow.Instance.CurrentControl.Content = new Common.Ctrl_MainPage();
                 }
             }
             catch (Exception)

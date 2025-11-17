@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YClimb.Controls.Content;
 
 namespace YClimb.Controls
 {
@@ -23,6 +24,7 @@ namespace YClimb.Controls
         public Ctrl_Profile()
         {
             InitializeComponent();
+            PageData.Content = new Profile();
         }
 
         private void Button_Feed_Click(object sender, RoutedEventArgs e)

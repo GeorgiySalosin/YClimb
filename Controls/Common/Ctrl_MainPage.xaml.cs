@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace YClimb.Controls.Common
+{
+    /// <summary>
+    /// Логика взаимодействия для Ctrl_MainPage.xaml
+    /// </summary>
+    public partial class Ctrl_MainPage : UserControl
+    {
+        public Ctrl_MainPage()
+        {
+            InitializeComponent();
+        }
+
+        private void Button_Feed_Click(object sender, RoutedEventArgs e)
+        {
+            DisableButton(Button_Feed);
+            PageData.Content = new Ctrl_Feed();
+        }
+
+        private void Button_Routes_Click(object sender, RoutedEventArgs e)
+        {
+            DisableButton(Button_Routes);
+        }
+
+        private void Button_Events_Click(object sender, RoutedEventArgs e)
+        {
+            DisableButton(Button_Events);
+        }
+
+        private void Button_Schedule_Click(object sender, RoutedEventArgs e)
+        {
+            DisableButton(Button_Schedule);
+        }
+
+        private void Button_Profile_Click(object sender, RoutedEventArgs e)
+        {
+            DisableButton(Button_Profile);
+        }
+
+        private void DisableButton(Button button)
+        {
+            Button_Feed.IsEnabled = true;
+            Button_Routes.IsEnabled = true;
+            Button_Events.IsEnabled = true;
+            Button_Schedule.IsEnabled = true;
+            Button_Profile.IsEnabled = true;
+
+            button.IsEnabled = false;
+        }
+
+    }
+}

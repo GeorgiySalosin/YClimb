@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="YClimb.Controls.Common.Ctrl_FeedPost"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:YClimb.Controls.Common"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1024">
+    <Border Style="{StaticResource BorderBase}" Background="#eee7ee" 
+            Width="960" Height="Auto">
+        <ScrollViewer>
+            <StackPanel Background="Transparent">
+                <TextBlock Text="pass header"
+                           FontSize="32" FontWeight="Bold"
+                           FontFamily="Bahnschrift"
+                           Margin="128,32,0,0"/>
+                <TextBlock Text="pass text: regular posts will appear here later."
+                           FontSize="24"
+                           FontFamily="Bahnschrift"
+                           Margin="64,32,0,0"/>
+
+                <Border Style="{StaticResource BorderBase}"
+                        Width="720" Height="480" HorizontalAlignment="Left"
+                        Margin="64">
+                    <Border.Background>
+                        <ImageBrush ImageSource="/Images/BackgroundMenu.jpg"
+                                    />
+                    </Border.Background>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

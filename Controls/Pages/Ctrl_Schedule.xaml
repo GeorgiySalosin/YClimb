@@ -67,7 +67,7 @@
         <Border Style="{StaticResource BorderBase}" Grid.Column="1" Background="#c6c4ca"
                 Margin="0,8,8,8">
             <StackPanel Style="{StaticResource StackPanelBase}">
-                <UserControl x:Name="page_data" 
+                <UserControl x:Name="PageData" 
                              Height="Auto" HorizontalAlignment="Center"/>
             </StackPanel>
             

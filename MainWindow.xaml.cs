@@ -27,6 +27,8 @@ namespace YClimb
                 return CurrentCtrl;
             }
         }
+
+
         public MainWindow()
         {
             Instance = this;
