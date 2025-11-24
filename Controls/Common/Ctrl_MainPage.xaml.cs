@@ -28,32 +28,36 @@ namespace YClimb.Controls.Common
 
         private void Button_Feed_Click(object sender, RoutedEventArgs e)
         {
-            DisableButton(Button_Feed);
+            ChangeButtonTo(Button_Feed);
+            PageData.Content = new Ctrl_EmptyPage();
         }
 
         private void Button_Routes_Click(object sender, RoutedEventArgs e)
         {
-            DisableButton(Button_Routes);
-            
+            ChangeButtonTo(Button_Routes);
+            PageData.Content = new Routes();
         }
 
         private void Button_Events_Click(object sender, RoutedEventArgs e)
         {
-            DisableButton(Button_Events);
+            ChangeButtonTo(Button_Events);
+            PageData.Content = new Events();
         }
 
         private void Button_Schedule_Click(object sender, RoutedEventArgs e)
         {
-            DisableButton(Button_Schedule);
+            ChangeButtonTo(Button_Schedule);
+            PageData.Content = new Schedule();
         }
 
         private void Button_Profile_Click(object sender, RoutedEventArgs e)
         {
-            DisableButton(Button_Profile);
+            ChangeButtonTo(Button_Profile);
             PageData.Content = new Profile();
         }
 
-        private void DisableButton(Button button)
+
+        private void ChangeButtonTo(Button button)
         {
             Button_Feed.IsEnabled = true;
             Button_Routes.IsEnabled = true;

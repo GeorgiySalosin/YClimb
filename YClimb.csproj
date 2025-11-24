@@ -28,6 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\DefaultUser.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
