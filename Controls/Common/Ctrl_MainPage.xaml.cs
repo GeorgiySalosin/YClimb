@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YClimb.Controls.Content;
 
 namespace YClimb.Controls.Common
 {
@@ -28,12 +29,12 @@ namespace YClimb.Controls.Common
         private void Button_Feed_Click(object sender, RoutedEventArgs e)
         {
             DisableButton(Button_Feed);
-            PageData.Content = new Ctrl_Feed();
         }
 
         private void Button_Routes_Click(object sender, RoutedEventArgs e)
         {
             DisableButton(Button_Routes);
+            
         }
 
         private void Button_Events_Click(object sender, RoutedEventArgs e)
@@ -49,6 +50,7 @@ namespace YClimb.Controls.Common
         private void Button_Profile_Click(object sender, RoutedEventArgs e)
         {
             DisableButton(Button_Profile);
+            PageData.Content = new Profile();
         }
 
         private void DisableButton(Button button)
