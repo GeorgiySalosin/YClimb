@@ -30,8 +30,8 @@ namespace YClimb.Controls
             InitializeComponent();
             Loaded += SignUp_Loaded;
 
-            uc_nickname.Content = new Ctrl_TextField("Nickname", 24);
-            uc_email.Content = new Ctrl_TextField("Email", 24);
+            uc_nickname.Content = new Ctrl_TextField("Nickname", 32);
+            uc_email.Content = new Ctrl_TextField("Email", 32);
             uc_password.Content = new Ctrl_TextField("Password");
             uc_password_confirm.Content = new Ctrl_TextField("Confirm Password");
         }
@@ -102,7 +102,11 @@ namespace YClimb.Controls
             // Creating a user with hashed password version!!!!
 
             string hashedPassword = PasswordHelper.HashPassword(password);
-            User user = new(nickname, email, hashedPassword);
+            User user = new(nickname, email, hashedPassword)
+            {
+                Avatar = null,
+                IsAdmin = false
+            };
 
 
             db.Users.Add(user);
@@ -110,6 +114,11 @@ namespace YClimb.Controls
 
             MainWindow.Instance.CurrentControl.Content = new Ctrl_LogIn(GetNickname(), GetPassword()); 
             
+        }
+
+        private void ButtonBackClick(object sender, RoutedEventArgs e)
+        {
+            MainWindow.Instance.CurrentControl.Content = new Ctrl_LogIn();
         }
     }
 

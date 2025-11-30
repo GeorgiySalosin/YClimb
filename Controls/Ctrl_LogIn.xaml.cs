@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YClimb.Controls.Common;
 using YClimb.Utilities;
 
 namespace YClimb.Controls
@@ -27,7 +28,7 @@ namespace YClimb.Controls
         {
             InitializeComponent();
 
-            uc_login.Content = new Ctrl_TextField("Nickname or Email", 24);
+            uc_login.Content = new Ctrl_TextField("Nickname or Email", 32);
 
             uc_password.Content = new Ctrl_TextField("Password");
 
@@ -83,20 +84,18 @@ namespace YClimb.Controls
 
                 if (ValidateCredentials(login, password))
                 {
-                    // Получаем данные пользователя для передачи на главную страницу
-                    var user = db.Users.FirstOrDefault(u => 
+                    // Получаем данные пользователя
+                    var user = db.Users.FirstOrDefault(u =>
                         u.Nickname == login || u.Email == login);
-                    
-                    MainWindow.Instance.CurrentControl.Content = new Common.Ctrl_MainPage();
-                    /*MainWindow.Instance.CurrentControl.Content = new Common.Ctrl_MainPage(user);*/
-                    MessageBox.Show($"Welcome, {user.Nickname}!");
+
+                    // Используем метод LoginUser из MainWindow для сохранения сессии
+                    MainWindow.Instance.LoginUser(user);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error during login: {ex.Message}");
             }
-            
         }
 
         private void ButtonSignUpClick(object sender, RoutedEventArgs e)

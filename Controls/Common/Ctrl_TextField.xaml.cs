@@ -26,10 +26,8 @@ namespace YClimb.Controls
             InitializeComponent();
             DataContext = this;
         }
-        public Ctrl_TextField(string title, int maxLength = 32)
+        public Ctrl_TextField(string title, int maxLength = 32): this()
         {
-            InitializeComponent();
-            DataContext = this;
             Title = title;
             MaxLength = maxLength;
         }
@@ -42,7 +40,7 @@ namespace YClimb.Controls
 
         public string PlaceholderText { get; set; } = "Value";
 
-        public int MaxLength { get; set; } = 16;
+        public int MaxLength { get; set; } = 32;
 
     }
 }

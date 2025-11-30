@@ -11,16 +11,44 @@ namespace YClimb.Utilities
     public class ApplicationContext : DbContext
     {
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Post> Posts { get; set; } = null!;
+        public DbSet<PostImage> PostImages { get; set; } = null!;
+        public DbSet<Trainer> Trainers { get; set; } = null!;
+        public DbSet<TrainingGroup> TrainingGroups { get; set; } = null!;
+        public DbSet<TrainingSession> TrainingSessions { get; set; } = null!;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=database.db");
         }
 
-       /* protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasData(
-                    new User(nickname: "Admin", email: "", password: PasswordHelper.HashPassword("Pass1"), isAdmin: true)
-            );
-        }*/
+            // Post relationships
+            modelBuilder.Entity<Post>()
+                .HasOne(p => p.User)
+                .WithMany()
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PostImage>()
+                .HasOne(pi => pi.Post)
+                .WithMany(p => p.Images)
+                .HasForeignKey(pi => pi.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // TrainingSession relationships
+            modelBuilder.Entity<TrainingSession>()
+                .HasOne(ts => ts.TrainingGroup)
+                .WithMany(tg => tg.TrainingSessions)
+                .HasForeignKey(ts => ts.TrainingGroupId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TrainingSession>()
+                .HasOne(ts => ts.Trainer)
+                .WithMany(t => t.TrainingSessions)
+                .HasForeignKey(ts => ts.TrainerId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

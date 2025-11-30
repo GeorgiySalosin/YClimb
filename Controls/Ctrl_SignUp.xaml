@@ -35,13 +35,28 @@
 
             <Separator Height="8" Background="#DFDFBD"
                 Margin="0,4,0,4"/>
-            
+
+
+            <Button Style="{StaticResource ActionButtonTransparent}" 
+                        Click="ButtonBackClick"
+                        Width="60" Height="42"
+                        Background="#30000000"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                        Margin="0,4,16,0">
+                    <StackPanel Orientation="Horizontal">
+                    <Image Source="/Images/Icons/arrow_back_w.png" 
+                        Width="36" Height="28"/>
+                    </StackPanel>
+            </Button>
 
             <Button Style="{StaticResource ActionButtonBlack}" 
                         Click="ButtonConfirmSignUpClick"
                         Content="Sign up"
                         Width="148" Height="42"
-                        VerticalAlignment="Bottom"/>
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Left"
+                        Margin="16,-42,0,0"/>
         </StackPanel>
     </Border>
 </UserControl>

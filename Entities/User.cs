@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace YClimb.Entities
 {
@@ -27,5 +28,8 @@ namespace YClimb.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public bool? IsAdmin { get; set; }
+
+
+        public byte[]? Avatar { get; set; }
     }
 }

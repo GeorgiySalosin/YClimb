@@ -12,8 +12,7 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
-        <!--                    L E F T   T A B    (NAVIGATION)             -->
-
+        <!-- L E F T   T A B   (NAVIGATION) -->
         <Border Style="{StaticResource BorderBase}" Grid.Column="0" Background="#ccc4c4d4">
             <StackPanel Style="{StaticResource StackPanelBase}">
 
@@ -23,7 +22,7 @@
                     Click="Button_Feed_Click"
                     Content="Feed"
                     Width="200" Height="48"   
-                    Margin="0,26,0,0"/>
+                    Margin="0,8,0,0"/>
 
                 <Button Style="{StaticResource MenuButton}"
                     Name="Button_Routes"
@@ -46,21 +45,44 @@
                     Click="Button_Schedule_Click"        
                     Margin="0,26,0,0"/>
 
-                <Border Style="{StaticResource BorderImageAvatar}" 
-                    Width="100" Height="100" Margin="0,130,0,0" HorizontalAlignment="Center">
-                    <Border.Background>
+                <!-- Аватар пользователя -->
+                <Border x:Name="AvatarBorder" 
+                        Style="{StaticResource BorderImageAvatar}" 
+                        Width="100" Height="100" 
+                        Margin="0,64,0,0" 
+                        HorizontalAlignment="Center">
+                    <!--<Border.Background>
                         <ImageBrush ImageSource="/Images/DefaultUser.jpg"/>
-                    </Border.Background>
+                    </Border.Background>-->
                 </Border>
 
                 <Button Style="{StaticResource MenuButton}"
                     Name="Button_Profile"
-                    Content="Profile"
                     Width="200" Height="48"
                     Click="Button_Profile_Click"        
-                    Margin="0,20,0,0"/>
+                    Margin="0,20,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="-16,0,0,0">
+                        <Image Source="/Images/Icons/user_single_b.png"  
+                        Width="36" Height="28"
+                               Opacity="0.6"/>
+                        <TextBlock Text="Profile"/>
+                    </StackPanel>
+                </Button>
 
-                
+
+                <Button Style="{StaticResource ActionButtonTransparent}"
+                    HorizontalAlignment="Left"
+                    Name="ButtonLogOut"
+                    Click="ButtonLogOutClick"
+                    Width="200" Height="42"
+                    Margin="0,48,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Images/Icons/arrow_logout_b.png" 
+                        Width="36" Height="28"/>
+                        <TextBlock Text="Log Out" Foreground="#000000"/>
+                    </StackPanel>
+                </Button>
+
             </StackPanel>
 
             <Border.Effect>
@@ -68,15 +90,12 @@
             </Border.Effect>
         </Border>
 
-
-        <!--                     M A I N   T A B   (CONTENT)                -->
-
+        <!-- M A I N   T A B   (CONTENT) -->
         <Border Style="{StaticResource BorderBase}" Grid.Column="1" Background="#c6c4ca"
                 Margin="0,8,8,8">
-            <StackPanel Style="{StaticResource StackPanelBase}">
-                <UserControl x:Name="PageData" 
-                 Height="Auto" HorizontalAlignment="Center"/>
-            </StackPanel>
+            <ContentPresenter x:Name="PageData" 
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"/>
 
             <Border.Effect>
                 <DropShadowEffect Direction="270"  Opacity="0.4"/>

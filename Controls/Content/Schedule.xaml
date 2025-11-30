@@ -5,8 +5,62 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YClimb.Controls.Content"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        
-    </StackPanel>
+             d:DesignHeight="720" d:DesignWidth="1024">
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden">
+            <ItemsControl x:Name="ScheduleItemsControl">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="16"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#FFE0E0E0" BorderThickness="1" 
+                                Margin="8" Background="White"
+                                CornerRadius="8" Width="280">
+                            <StackPanel>
+                                <!-- Header -->
+                                <Border Background="#FF2C3E50" CornerRadius="8,8,0,0" 
+                                        Padding="15,10">
+                                    <TextBlock Text="{Binding Date, StringFormat='dddd, dd.MM'}" 
+                                               Foreground="White" FontSize="16" FontWeight="Bold"
+                                               TextAlignment="Center"/>
+                                </Border>
+
+                                <!-- Sessions -->
+                                <StackPanel Margin="0,10">
+                                    <ItemsControl ItemsSource="{Binding Sessions}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="#FFE8E8E8" BorderThickness="0,0,0,1" 
+                                                        Padding="15,8" Margin="0,0,0,5">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding TrainingGroup.Name}" 
+                                                                   FontSize="14" FontWeight="SemiBold"
+                                                                   Foreground="#FF2C3E50"/>
+                                                        <TextBlock Text="{Binding Trainer.Name}" 
+                                                                   FontSize="12" Foreground="#FF7F8C8D"
+                                                                   Margin="0,2,0,0"/>
+                                                        <TextBlock>
+                                                            <Run Text="{Binding StartTime, StringFormat='HH:mm'}"/>
+                                                            <Run Text=" - "/>
+                                                            <Run Text="{Binding EndTime, StringFormat='HH:mm'}"/>
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </UserControl>
