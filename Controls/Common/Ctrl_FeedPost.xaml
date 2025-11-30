@@ -8,7 +8,7 @@
              d:DesignWidth="1024">
 
     <Border Style="{StaticResource BorderBase}" Background="#eee7ee" 
-            Width="800" Height="Auto" Margin="0,10,0,10">
+            Width="860" Height="Auto" Margin="0,10,0,10">
         <StackPanel Background="Transparent">
             <!-- Заголовок поста -->
             <TextBlock Text="{Binding Title}"

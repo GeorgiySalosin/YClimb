@@ -5,11 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YClimb.Controls.Common"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignWidth="800">
 
     <Border Style="{StaticResource BorderBase}" Background="#eee7ee" 
-            Width="1024" Height="720" Margin="2">
-        <StackPanel Background="Transparent" Margin="8">
+            Width="860" Height="620">
+        <Border.Effect>
+            <DropShadowEffect Opacity="0.3"/>
+        </Border.Effect>
+        <StackPanel Background="Transparent" Height="Auto">
 
             <!-- Заголовок -->
             <TextBlock Text="New Post"
@@ -103,14 +106,13 @@
 
             <StackPanel Orientation="Horizontal" 
                         HorizontalAlignment="Center"
-                        Margin="0,30,0,0">
+                        Margin="0,64,0,0">
                 <Button x:Name="CreatePostButton" 
                         Content="Create Post"
                         Click="CreatePostButton_Click"
                         FontSize="18" FontFamily="Bahnschrift" FontWeight="Bold"
                         Width="140" Height="50"
-                        Style="{StaticResource ActionButton}"
-                        Background="#2196f3" Foreground="White"
+                        Style="{StaticResource ActionButtonBlue}"
                         Margin="0,0,20,0"/>
 
                 <Button x:Name="CancelButton" 
@@ -118,10 +120,9 @@
                         Click="CancelButton_Click"
                         FontSize="18" FontFamily="Bahnschrift"
                         Width="120" Height="50"
-                        Style="{StaticResource ActionButton}"
-                        Background="#9e9e9e" Foreground="White"/>
+                        Style="{StaticResource ActionButtonBlack}"/>
             </StackPanel>
-            
+
         </StackPanel>
     </Border>
 </UserControl>

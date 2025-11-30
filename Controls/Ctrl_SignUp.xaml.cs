@@ -65,7 +65,7 @@ namespace YClimb.Controls
                 string login = ((Ctrl_TextField)uc_nickname.Content).TB.Text;
                 string email = ((Ctrl_TextField)uc_email.Content).TB.Text;
                 string password = ((Ctrl_TextField)uc_password.Content).TB.Text;
-                if (login != string.Empty && password != string.Empty && email!= string.Empty)
+                if (login.Count() < 8 && password != string.Empty && email!= string.Empty)
                 {
                     return true;
                 }
@@ -98,6 +98,7 @@ namespace YClimb.Controls
                 MessageBox.Show("User with this nickname or email already exists!");
                 return;
             }
+
 
             // Creating a user with hashed password version!!!!
 

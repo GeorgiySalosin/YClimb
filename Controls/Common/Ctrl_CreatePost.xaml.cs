@@ -112,18 +112,18 @@ namespace YClimb.Controls.Common
 
         private async void CreatePostButton_Click(object sender, RoutedEventArgs e)
         {
-            //// Валидация
-            //if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
-            //{
-            //    ShowStatus("Please enter a title", isError: true);
-            //    return;
-            //}
+            // Валидация
+            if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
+            {
+                MessageBox.Show("Please enter a title");
+                return;
+            }
 
-            //if (string.IsNullOrWhiteSpace(ContentTextBox.Text))
-            //{
-            //    ShowStatus("Please enter post content", isError: true);
-            //    return;
-            //}
+            if (string.IsNullOrWhiteSpace(ContentTextBox.Text) && _attachedImages.Count == 0)
+            {
+                MessageBox.Show("No content is attached");
+                return;
+            }
 
             try
             {

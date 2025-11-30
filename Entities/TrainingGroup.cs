@@ -12,7 +12,7 @@ namespace YClimb.Entities
     {
         public TrainingGroup() { }
 
-        public TrainingGroup(string name, string description = "No description")
+        public TrainingGroup(string name, string description = "-")
         {
             Name = name;
             Description = description;

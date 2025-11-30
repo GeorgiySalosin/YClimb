@@ -16,26 +16,39 @@
                 </Border.Background>
             </Border>
 
-        
+
 
             <Button Style="{StaticResource ActionButton}"
                     HorizontalAlignment="Left"
-                    Content="Set..."
                     Name="ButtonChangeAvatar"
                     Click="ChangePFP"
                     Width="200" Height="42"
-                    Margin="64,0,0,0"/>
+                    Margin="64,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="36" Height="36" Source="/Images/Icons/upload_image_b.png"
+                     />
+                    <TextBlock Text="Set..." FontSize="18" 
+                               VerticalAlignment="Center"
+                               Margin="4,0,0,0"/>
+                </StackPanel>
+            </Button>
 
             <Button Style="{StaticResource ActionButtonBlack}"
                     HorizontalAlignment="Left"
-                    Content="Delete..."
                     Name="ButtonRemoveAvatar"
                     Click="RemovePFP"
                     Width="200" Height="42"
-                    Margin="64,16,0,0"/>
+                    Margin="64,16,0,0"   >
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="36" Height="36" Source="/Images/Icons/trashcan_w.png"/>
+                    <TextBlock Text="Delete..." FontSize="18"
+                               VerticalAlignment="Center"
+                                Margin="4,0,0,0"/>
+                </StackPanel>
+            </Button>
 
-            
-        </StackPanel>
+
+    </StackPanel>
 
         <StackPanel Margin="48">
             <UserControl x:Name="uc_nickname"

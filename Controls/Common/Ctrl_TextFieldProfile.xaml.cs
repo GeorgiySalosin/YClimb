@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,9 +26,10 @@ namespace YClimb.Controls.Common
             DataContext = this;
         }
 
-        public Ctrl_TextFieldProfile(int maxLength = 32) : this()
+        public Ctrl_TextFieldProfile(string title = "Title", int maxLength = 32) : this()
         {
             MaxLength = maxLength;
+            Title = title;
         }
 
         public string ButtonIconSource
@@ -39,6 +40,8 @@ namespace YClimb.Controls.Common
         private string _buttonIconSource = "/Images/Icons/edit_pencil_b.png";
 
         public string ButtonOnEditIconSource { get; set; } = "/Images/Icons/check_b.png";
+
+        public string Title { get; set; }
 
         public string Text { get; set; }
 
@@ -58,6 +61,10 @@ namespace YClimb.Controls.Common
                 // Устанавливаем иконку для режима редактирования
                 Image.Source = new BitmapImage(new Uri(ButtonOnEditIconSource, UriKind.RelativeOrAbsolute));
                 TextBox.Visibility = Visibility.Visible;
+
+                TextBox.Text = TextBlock.Text;
+                TextBox.SelectAll();
+
                 TextBlock.Visibility = Visibility.Hidden;
                 TextBox.Focus();
             }

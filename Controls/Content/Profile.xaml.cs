@@ -26,11 +26,11 @@ namespace YClimb.Controls.Content
             InitializeComponent();
             DataContext = this;
 
-            var nicknameControl = new Ctrl_TextFieldProfile(32);
+            var nicknameControl = new Ctrl_TextFieldProfile("Nickname", 32);
             nicknameControl.TextSaved += OnNicknameSaved;
             uc_nickname.Content = nicknameControl;
 
-            var emailControl = new Ctrl_TextFieldProfile(32);
+            var emailControl = new Ctrl_TextFieldProfile("Email", 32);
             emailControl.TextSaved += OnEmailSaved;
             uc_email.Content = emailControl;
 

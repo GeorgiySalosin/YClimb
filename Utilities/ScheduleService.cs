@@ -48,7 +48,7 @@ namespace YClimb.Utilities
             return dailySchedules;
         }
 
-        // FOR INITIALIZING
+        // FOR INIT
         public void InitializeSampleSchedule()
         {
             if (_context.TrainingSessions.Any()) return;
