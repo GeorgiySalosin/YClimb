@@ -49,7 +49,6 @@ namespace YClimb.Controls
 
         private bool ValidateCredentials(string login, string password)
         {
-            // Ищем пользователя по nickname ИЛИ email
             var user = db.Users.FirstOrDefault(u =>
                 u.Nickname == login || u.Email == login);
 
@@ -84,11 +83,9 @@ namespace YClimb.Controls
 
                 if (ValidateCredentials(login, password))
                 {
-                    // Получаем данные пользователя
                     var user = db.Users.FirstOrDefault(u =>
                         u.Nickname == login || u.Email == login);
 
-                    // Используем метод LoginUser из MainWindow для сохранения сессии
                     MainWindow.Instance.LoginUser(user);
                 }
             }

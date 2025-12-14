@@ -75,12 +75,6 @@ namespace YClimb.Utilities
         }
 
         
-        public static byte[] ResizeForStorage(byte[] imageBytes)
-        {
-            return ResizeToWidth(imageBytes, 860);
-        }
-
-
         private static System.Drawing.Imaging.ImageCodecInfo GetEncoder(System.Drawing.Imaging.ImageFormat format)
         {
             var codecs = System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders();

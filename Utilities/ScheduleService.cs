@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YClimb.Entities;
-using YClimb.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace YClimb.Utilities
@@ -43,15 +40,17 @@ namespace YClimb.Utilities
                     .Where(t => t.DayOfWeek == dayOfWeek)
                     .ToList();
 
-                // Convert templates to actual sessions for this date
-                var sessions = dayTemplates.Select(template => new TrainingSession
+                // Convert templates to sessions for this date
+                var sessions = dayTemplates.Select(template => new TrainingSessionViewModel
                 {
                     TrainingGroupId = template.TrainingGroupId,
                     TrainingGroup = template.TrainingGroup,
                     TrainerId = template.TrainerId,
                     Trainer = template.Trainer,
                     StartTime = date.Add(template.StartTime),
-                    EndTime = date.Add(template.EndTime)
+                    EndTime = date.Add(template.EndTime),
+                    // Храним ID шаблона для возможных операций
+                    TemplateId = template.Id
                 }).ToList();
 
                 dailySchedules.Add(new DailySchedule
@@ -64,7 +63,7 @@ namespace YClimb.Utilities
             return dailySchedules;
         }
 
-        // FOR INIT - Теперь создаем шаблоны вместо конкретных сессий
+        // FOR INIT - Создаем только шаблоны
         public void InitializeSampleSchedule()
         {
             if (_context.ScheduleTemplates.Any()) return;
@@ -90,36 +89,70 @@ namespace YClimb.Utilities
             var mwfDays = new[] { DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday };
             foreach (var day in mwfDays)
             {
-                templates.Add(new ScheduleTemplate(day, group1.Id, trainer1.Id,
-                    TimeSpan.FromHours(9.5), TimeSpan.FromHours(12)));
-                templates.Add(new ScheduleTemplate(day, group2.Id, trainer3.Id,
-                    TimeSpan.FromHours(17), TimeSpan.FromHours(22)));
+                templates.Add(new ScheduleTemplate
+                {
+                    DayOfWeek = day,
+                    TrainingGroupId = group1.Id,
+                    TrainerId = trainer1.Id,
+                    StartTime = TimeSpan.FromHours(9.5),
+                    EndTime = TimeSpan.FromHours(12)
+                });
+                templates.Add(new ScheduleTemplate
+                {
+                    DayOfWeek = day,
+                    TrainingGroupId = group2.Id,
+                    TrainerId = trainer3.Id,
+                    StartTime = TimeSpan.FromHours(17),
+                    EndTime = TimeSpan.FromHours(22)
+                });
             }
 
             // Tuesday, Thursday
             var ttDays = new[] { DayOfWeek.Tuesday, DayOfWeek.Thursday };
             foreach (var day in ttDays)
             {
-                templates.Add(new ScheduleTemplate(day, group3.Id, trainer2.Id,
-                    TimeSpan.FromHours(10), TimeSpan.FromHours(13)));
-                templates.Add(new ScheduleTemplate(day, group2.Id, trainer3.Id,
-                    TimeSpan.FromHours(18), TimeSpan.FromHours(21)));
+                templates.Add(new ScheduleTemplate
+                {
+                    DayOfWeek = day,
+                    TrainingGroupId = group3.Id,
+                    TrainerId = trainer2.Id,
+                    StartTime = TimeSpan.FromHours(10),
+                    EndTime = TimeSpan.FromHours(13)
+                });
+                templates.Add(new ScheduleTemplate
+                {
+                    DayOfWeek = day,
+                    TrainingGroupId = group2.Id,
+                    TrainerId = trainer3.Id,
+                    StartTime = TimeSpan.FromHours(18),
+                    EndTime = TimeSpan.FromHours(21)
+                });
             }
 
             // Saturday
-            templates.Add(new ScheduleTemplate(DayOfWeek.Saturday, group1.Id, trainer1.Id,
-                TimeSpan.FromHours(11), TimeSpan.FromHours(14)));
-
-            // Sunday - no sessions (day off)
+            templates.Add(new ScheduleTemplate
+            {
+                DayOfWeek = DayOfWeek.Saturday,
+                TrainingGroupId = group1.Id,
+                TrainerId = trainer1.Id,
+                StartTime = TimeSpan.FromHours(11),
+                EndTime = TimeSpan.FromHours(14)
+            });
 
             _context.ScheduleTemplates.AddRange(templates);
             _context.SaveChanges();
         }
 
-        // Метод для управления шаблонами расписания
+        // Методы для управления шаблонами
         public void AddScheduleTemplate(ScheduleTemplate template)
         {
             _context.ScheduleTemplates.Add(template);
+            _context.SaveChanges();
+        }
+
+        public void UpdateScheduleTemplate(ScheduleTemplate template)
+        {
+            _context.ScheduleTemplates.Update(template);
             _context.SaveChanges();
         }
 
@@ -142,11 +175,31 @@ namespace YClimb.Utilities
                 .ThenBy(st => st.StartTime)
                 .ToList();
         }
+
+        public ScheduleTemplate? GetTemplateById(int id)
+        {
+            return _context.ScheduleTemplates
+                .Include(st => st.TrainingGroup)
+                .Include(st => st.Trainer)
+                .FirstOrDefault(st => st.Id == id);
+        }
+    }
+
+
+    public class TrainingSessionViewModel
+    {
+        public int TemplateId { get; set; }
+        public int TrainingGroupId { get; set; }
+        public virtual TrainingGroup? TrainingGroup { get; set; }
+        public int TrainerId { get; set; }
+        public virtual Trainer? Trainer { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
     }
 
     public class DailySchedule
     {
         public DateTime Date { get; set; }
-        public List<TrainingSession> Sessions { get; set; } = new List<TrainingSession>();
+        public List<TrainingSessionViewModel> Sessions { get; set; } = new List<TrainingSessionViewModel>();
     }
 }

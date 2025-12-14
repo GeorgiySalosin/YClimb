@@ -88,44 +88,21 @@ namespace YClimb.Controls.Common
                 var previewImage = ImageHelper.CreateBitmapImage(_selectedImageBytes);
                 PreviewImage.Source = previewImage;
 
-                int circleCount = GetCircleCount(editorWindow.LayerData);
-                if (circleCount > 0)
-                {
-                    MessageBox.Show($"Image saved with {circleCount} circle(s)!",
-                        "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
             }
         }
 
-        private int GetCircleCount(string layerData)
-        {
-            if (string.IsNullOrEmpty(layerData))
-                return 0;
-
-            try
-            {
-                var circles = JsonConvert.DeserializeObject<List<CircleLayer>>(layerData);
-                return circles?.Count ?? 0;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
             {
-                MessageBox.Show("Please enter route title", "Warning",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter route title");
                 return;
             }
 
             if (_selectedImageBytes == null)
             {
-                MessageBox.Show("Please upload an image for the route", "Warning",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please upload an image for the route");
                 return;
             }
 
@@ -134,10 +111,8 @@ namespace YClimb.Controls.Common
                 CreateButton.IsEnabled = false;
                 CreateButton.Content = "Creating...";
 
-                // Изображение уже масштабировано в редакторе, просто оптимизируем для хранения
-                var finalImageBytes = ImageHelper.ResizeForStorage(_selectedImageBytes);
-
-                Console.WriteLine($"Creating route with image size: {finalImageBytes.Length} bytes");
+                
+                var finalImageBytes = _selectedImageBytes;
 
                 using (var context = new ApplicationContext())
                 {

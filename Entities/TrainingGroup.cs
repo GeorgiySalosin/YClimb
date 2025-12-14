@@ -24,8 +24,5 @@ namespace YClimb.Entities
 
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; }
-
-        // Navigation property
-        public virtual ICollection<TrainingSession> TrainingSessions { get; set; } = new List<TrainingSession>();
     }
 }

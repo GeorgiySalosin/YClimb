@@ -82,19 +82,12 @@ namespace YClimb.Controls.Common
             }
         }
 
-        private void ClearImagesButton_Click(object sender, RoutedEventArgs e)
-        {
-            _attachedImages.Clear();
-            RefreshImageList();
-        }
 
         private void RefreshImageList()
         {
             SelectedImagesControl.ItemsSource = null;
             SelectedImagesControl.ItemsSource = _attachedImages;
         }
-
-        
 
         private BitmapImage CreateBitmapImage(byte[] imageData)
         {
@@ -112,7 +105,7 @@ namespace YClimb.Controls.Common
 
         private async void CreatePostButton_Click(object sender, RoutedEventArgs e)
         {
-            // Валидация
+
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
             {
                 MessageBox.Show("Please enter a title");
@@ -129,11 +122,9 @@ namespace YClimb.Controls.Common
             {
                 CreatePostButton.IsEnabled = false;
                 CancelButton.IsEnabled = false;
-
-                // Конвертируем изображения в byte[]
                 var imageDataList = _attachedImages.Select(img => img.ImageData).ToList();
 
-                // Создаем пост
+                
                 var post = await _postService.CreatePostAsync(
                     TitleTextBox.Text.Trim(),
                     ContentTextBox.Text.Trim(),
@@ -144,7 +135,6 @@ namespace YClimb.Controls.Common
                 
                 PostCreated?.Invoke(this, new PostCreatedEventArgs(post));
 
-                // Очищаем форму
                 ClearForm();
             }
             catch (Exception ex)
@@ -174,7 +164,9 @@ namespace YClimb.Controls.Common
         
     }
 
-    // Вспомогательные классы
+    
+
+
     public class ImageFile
     {
         public string FileName { get; set; } = string.Empty;

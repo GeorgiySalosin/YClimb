@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -27,22 +28,23 @@ namespace YClimb
             get => CurrentCtrl;
         }
 
+
+        
         public MainWindow()
         {
             Instance = this;
             InitializeComponent();
 
-            // Проверяем, есть ли сохраненная сессия
+            
             if (TryRestoreUserSession())
             {
-                // Пользователь автоматически вошел
                 return;
             }
 
-            // Если нет сохраненной сессии, показываем страницу входа
             ShowLoginPage();
         }
 
+        
         private bool TryRestoreUserSession()
         {
             try
@@ -55,13 +57,13 @@ namespace YClimb
 
                     if (user != null)
                     {
-                        // Успешно восстановили сессию
+                        // success
                         ShowMainPage(user);
                         return true;
                     }
                     else
                     {
-                        // Пользователь не найден - очищаем настройки
+                        // fail
                         AppSettings.ClearUserSession();
                     }
                 }
@@ -85,9 +87,10 @@ namespace YClimb
             CurrentCtrl.Content = new Ctrl_MainPage(user);
         }
 
+
         public void LoginUser(User user)
         {
-            // Сохраняем ID пользователя в настройках
+            // saving user id to allow him instantly log in nt
             AppSettings.CurrentUserId = user.Id;
             ShowMainPage(user);
         }

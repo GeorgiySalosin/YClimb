@@ -20,11 +20,11 @@ namespace YClimb.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        // Связь с пользователем
+        
         public int UserId { get; set; }
         public User User { get; set; } = null!;
 
-        // Изображение маршрута (только одно)
+        
         public virtual RouteImage? Image { get; set; }
     }
 

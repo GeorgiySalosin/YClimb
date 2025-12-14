@@ -24,11 +24,11 @@ namespace YClimb.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        // Связь с пользователем
+        
         public int UserId { get; set; }
         public User User { get; set; } = null!;
 
-        // Коллекция изображений
+        
         public virtual ICollection<PostImage> Images { get; set; } = new List<PostImage>();
     }
 
@@ -42,7 +42,7 @@ namespace YClimb.Entities
         public string FileName { get; set; } = string.Empty;
         public int Order { get; set; }
 
-        // Связь с постом
+        
         public int PostId { get; set; }
         public Post Post { get; set; } = null!;
     }

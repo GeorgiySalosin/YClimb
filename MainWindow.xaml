@@ -6,7 +6,7 @@
         xmlns:uc="clr-namespace:YClimb.Controls"
         xmlns:local="clr-namespace:YClimb"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280" Background="#AEAEB2">
+        Title="YClimb" Icon="/Images/app_icon.png" Height="720" Width="1280" Background="#AEAEB2" ResizeMode="CanMinimize">
     <Grid Margin="0">
         <Image Source="/Images/BG.jpg" Height="720" Width="1280"/>
         <UserControl Name="CurrentCtrl"/>

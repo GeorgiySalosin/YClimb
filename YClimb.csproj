@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\app_icon.png" />
     <None Remove="Images\BackgroundMenu.jpg" />
     <None Remove="Images\BG.jpg" />
     <None Remove="Images\DefaultPage.png" />
@@ -80,6 +81,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\app_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\DefaultUser.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

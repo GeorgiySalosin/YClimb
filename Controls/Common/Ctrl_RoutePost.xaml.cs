@@ -56,7 +56,8 @@ namespace YClimb.Controls.Common
         public string Title => _route.Title;
         public DateTime CreatedAt => _route.CreatedAt;
 
-        // Свойства для видимости кнопки удаления
+
+
         public Visibility DeleteButtonVisibility { get; private set; }
         public ICommand DeleteCommand { get; private set; }
 
@@ -77,10 +78,8 @@ namespace YClimb.Controls.Common
             _isCurrentUserAdmin = currentUser?.IsAdmin ?? false;
             _postService = new PostService(new ApplicationContext());
 
-            // Проверяем, может ли текущий пользователь удалить этот маршрут
-            DeleteButtonVisibility = CanDeleteRoute() ? Visibility.Visible : Visibility.Collapsed;
 
-            // Команда удаления
+            DeleteButtonVisibility = CanDeleteRoute() ? Visibility.Visible : Visibility.Collapsed;
             DeleteCommand = new RelayCommand(async () => await DeleteRouteAsync());
 
             LoadImage();
@@ -91,7 +90,6 @@ namespace YClimb.Controls.Common
             if (_currentUser == null)
                 return false;
 
-            // Автор или админ
             return _route.UserId == _currentUser.Id || _isCurrentUserAdmin;
         }
 
@@ -121,8 +119,6 @@ namespace YClimb.Controls.Common
                     {
                         MessageBox.Show("Route deleted successfully!", "Success",
                             MessageBoxButton.OK, MessageBoxImage.Information);
-
-                        // Вызываем событие удаления
                         OnRouteDeleted?.Invoke(this, EventArgs.Empty);
                     }
                     else
@@ -139,7 +135,6 @@ namespace YClimb.Controls.Common
             }
         }
 
-        // Событие для уведомления о удалении
         public event EventHandler OnRouteDeleted;
 
         private void LoadImage()
@@ -160,7 +155,6 @@ namespace YClimb.Controls.Common
 
                 if (imageData != null)
                 {
-                    // Изображение уже масштабировано до 860px, просто создаем BitmapImage
                     RouteImage = _postService.ConvertByteArrayToBitmapImage(imageData);
                 }
             }

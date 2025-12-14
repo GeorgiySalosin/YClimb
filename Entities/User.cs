@@ -17,7 +17,10 @@ namespace YClimb.Entities
             Email = email;
             Password = password;
         }
-
+        public User(string nickname, string email, string password, bool isAdmin): this(nickname, email, password)
+        {
+            IsAdmin = isAdmin;
+        }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -25,7 +28,7 @@ namespace YClimb.Entities
 
 
         public string Nickname { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
         public string Password { get; set; }
         public bool? IsAdmin { get; set; }
 

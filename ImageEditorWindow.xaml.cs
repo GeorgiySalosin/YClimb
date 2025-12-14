@@ -94,10 +94,7 @@ namespace YClimb.Windows
 
         private Point GetCanvasPoint(MouseEventArgs e)
         {
-            // Получаем точку относительно Canvas
             var canvasPoint = e.GetPosition(DrawingCanvas);
-
-            // Ограничиваем координаты размерами Canvas
             double x = Math.Max(0, Math.Min(canvasPoint.X, _imageWidth));
             double y = Math.Max(0, Math.Min(canvasPoint.Y, _imageHeight));
 
@@ -114,10 +111,8 @@ namespace YClimb.Windows
 
                 if (_currentTool == DrawingTool.Circle)
                 {
-                    // Создаем контейнер для двойной обводки
+                    
                     var container = new Grid();
-
-                    // Внешний круг (контрастный цвет)
                     var outerCircle = new Ellipse
                     {
                         Stroke = GetContrastBrush(),
@@ -127,7 +122,6 @@ namespace YClimb.Windows
                         Opacity = 0.8
                     };
 
-                    // Внутренний круг (основной цвет)
                     var innerCircle = new Ellipse
                     {
                         Stroke = GetMainBrush(),
@@ -140,21 +134,17 @@ namespace YClimb.Windows
                     container.Children.Add(outerCircle);
                     container.Children.Add(innerCircle);
 
-                    // Начальная позиция
                     Canvas.SetLeft(container, canvasPoint.X);
                     Canvas.SetTop(container, canvasPoint.Y);
                     DrawingCanvas.Children.Add(container);
 
-                    // Сохраняем ссылки
                     _currentCircle = new DoubleCircle { Container = container, Outer = outerCircle, Inner = innerCircle };
                     StatusText.Text = "Drawing circle... Release mouse to finish.";
                 }
                 else if (_currentTool == DrawingTool.Line)
                 {
-                    // Создаем контейнер для линии
                     var container = new Canvas();
 
-                    // Внешняя линия (контрастный цвет, толще)
                     var outerLine = new Line
                     {
                         X1 = canvasPoint.X,
@@ -167,7 +157,6 @@ namespace YClimb.Windows
                         Opacity = 0.8
                     };
 
-                    // Внутренняя линия (основной цвет)
                     var innerLine = new Line
                     {
                         X1 = canvasPoint.X,
@@ -187,7 +176,6 @@ namespace YClimb.Windows
                     Canvas.SetTop(container, 0);
                     DrawingCanvas.Children.Add(container);
 
-                    // Сохраняем ссылки
                     _currentLine = new DoubleLine { Container = container, Outer = outerLine, Inner = innerLine };
                     StatusText.Text = "Drawing line... Release mouse to finish.";
                 }
@@ -222,7 +210,6 @@ namespace YClimb.Windows
 
                 if (_currentTool == DrawingTool.Circle && _currentCircle != null)
                 {
-                    // Вычисляем параметры круга
                     double radius = Math.Sqrt(
                         Math.Pow(currentPoint.X - _startPoint.X, 2) +
                         Math.Pow(currentPoint.Y - _startPoint.Y, 2)
@@ -231,7 +218,6 @@ namespace YClimb.Windows
                     double centerX = (_startPoint.X + currentPoint.X) / 2;
                     double centerY = (_startPoint.Y + currentPoint.Y) / 2;
 
-                    // Обновляем оба круга
                     Canvas.SetLeft(_currentCircle.Container, centerX - radius);
                     Canvas.SetTop(_currentCircle.Container, centerY - radius);
 
@@ -242,7 +228,6 @@ namespace YClimb.Windows
                 }
                 else if (_currentTool == DrawingTool.Line && _currentLine != null)
                 {
-                    // Обновляем обе линии
                     _currentLine.Outer.X2 = currentPoint.X;
                     _currentLine.Outer.Y2 = currentPoint.Y;
                     _currentLine.Inner.X2 = currentPoint.X;
@@ -261,7 +246,6 @@ namespace YClimb.Windows
                 {
                     var endPoint = GetCanvasPoint(e);
 
-                    // Вычисляем окончательные параметры
                     double radius = Math.Sqrt(
                         Math.Pow(endPoint.X - _startPoint.X, 2) +
                         Math.Pow(endPoint.Y - _startPoint.Y, 2)
@@ -272,7 +256,6 @@ namespace YClimb.Windows
 
                     Console.WriteLine($"Circle added: Center({centerX:F0}, {centerY:F0}), Radius: {radius:F0}");
 
-                    // Создаем слой круга
                     var circleLayer = new CircleLayer
                     {
                         CenterX = centerX,
@@ -285,11 +268,9 @@ namespace YClimb.Windows
                         ToolType = "circle"
                     };
 
-                    // Сохраняем
                     _circles.Add(circleLayer);
                     _circleContainers.Add(_currentCircle.Container);
 
-                    // Делаем круг постоянным
                     _currentCircle.Outer.StrokeDashArray = null;
                     _currentCircle.Inner.StrokeDashArray = null;
                     _currentCircle.Outer.Opacity = 1.0;
@@ -300,7 +281,6 @@ namespace YClimb.Windows
                 {
                     var endPoint = GetCanvasPoint(e);
 
-                    // Создаем слой линии
                     var lineLayer = new LineLayer
                     {
                         X1 = _startPoint.X,
@@ -314,11 +294,9 @@ namespace YClimb.Windows
                         ToolType = "line"
                     };
 
-                    // Сохраняем
                     _lines.Add(lineLayer);
                     _lineContainers.Add(_currentLine.Container);
 
-                    // Делаем линию постоянной
                     _currentLine.Outer.StrokeDashArray = null;
                     _currentLine.Inner.StrokeDashArray = null;
                     _currentLine.Outer.Opacity = 1.0;
@@ -329,8 +307,6 @@ namespace YClimb.Windows
                 UpdateStatus();
             }
         }
-
-        // Вспомогательные классы для хранения двойных элементов
         private class DoubleCircle
         {
             public Grid Container { get; set; }
@@ -347,7 +323,6 @@ namespace YClimb.Windows
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
-            // Удаляем последний элемент в зависимости от текущего инструмента
             if (_currentTool == DrawingTool.Circle && _circles.Count > 0 && !_isDrawing)
             {
                 var lastContainer = _circleContainers.LastOrDefault();
@@ -374,7 +349,6 @@ namespace YClimb.Windows
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            // Удаляем все элементы с Canvas
             foreach (var container in _circleContainers)
             {
                 DrawingCanvas.Children.Remove(container);
@@ -398,13 +372,11 @@ namespace YClimb.Windows
                 ApplyButton.IsEnabled = false;
                 ApplyButton.Content = "Saving...";
 
-                // Сохраняем данные слоев (объединяем круги и линии)
                 var allLayers = new List<object>();
                 allLayers.AddRange(_circles.Cast<object>());
                 allLayers.AddRange(_lines.Cast<object>());
                 LayerData = JsonConvert.SerializeObject(allLayers);
 
-                // Рендерим финальное изображение (уже масштабированное)
                 EditedImageBytes = await Task.Run(() => RenderFinalImage());
 
                 if (EditedImageBytes == null || EditedImageBytes.Length == 0)
@@ -430,8 +402,8 @@ namespace YClimb.Windows
         {
             try
             {
+                
 
-                // Используем ImageRenderer с масштабированным изображением
                 var result = ImageRenderer.RenderImageWithLayers(
                     _resizedImageBytes,
                     _circles.Cast<object>().Concat(_lines.Cast<object>()).ToList(),
@@ -454,7 +426,6 @@ namespace YClimb.Windows
             Close();
         }
 
-        // Обработчики для выбора инструментов
         private void CircleToolButton_Click(object sender, RoutedEventArgs e)
         {
             _currentTool = DrawingTool.Circle;

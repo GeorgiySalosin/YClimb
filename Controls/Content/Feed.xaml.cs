@@ -18,9 +18,6 @@ using YClimb.Utilities;
 
 namespace YClimb.Controls.Content
 {
-    /// <summary>
-    /// Логика взаимодействия для Feed.xaml
-    /// </summary>
     public partial class Feed : UserControl
     {
         private readonly User _currentUser;
@@ -40,12 +37,16 @@ namespace YClimb.Controls.Content
         private async void Feed_Loaded(object sender, RoutedEventArgs e)
         {
             await LoadPosts();
+
+            ShowCreatePostButton.Visibility = _currentUser.IsAdmin == true
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
+
         public async Task RefreshPosts()
         {
             await LoadPosts();
         }
-
 
         private void ShowCreatePostButton_Click(object sender, RoutedEventArgs e)
         {
@@ -65,16 +66,15 @@ namespace YClimb.Controls.Content
         private void HideCreatePostForm()
         {
             CreatePostContainer.Content = null;
-            ShowCreatePostButton.Visibility = Visibility.Visible;
+            ShowCreatePostButton.Visibility = _currentUser.IsAdmin == true
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
         private async void OnPostCreated(object? sender, PostCreatedEventArgs e)
         {
             HideCreatePostForm();
-
-            // update feed
             await LoadPosts();
-
             ScrollToTop();
         }
 
@@ -88,11 +88,8 @@ namespace YClimb.Controls.Content
             try
             {
                 var posts = await _postService.GetPostsWithUsersAsync();
-
-                // Очищаем существующие посты
                 PostsStackPanel.Children.Clear();
 
-                // Добавляем посты в ленту
                 foreach (var post in posts)
                 {
                     var postControl = new Ctrl_FeedPost
@@ -101,7 +98,6 @@ namespace YClimb.Controls.Content
                         Margin = new Thickness(0, 0, 0, 20)
                     };
 
-                    // Передаем текущего пользователя в ViewModel
                     var viewModel = new PostViewModel(post, _currentUser);
                     viewModel.OnPostDeleted += async (s, e) => await RefreshPosts();
                     postControl.DataContext = viewModel;
@@ -109,10 +105,12 @@ namespace YClimb.Controls.Content
                     PostsStackPanel.Children.Add(postControl);
                 }
 
-                // Если постов нет, показываем сообщение
+                
+
+
                 if (!posts.Any())
                 {
-                    Image noRoutesImage = new Image
+                    Image noPostsImage = new Image
                     {
                         Source = new BitmapImage(new Uri("pack://application:,,,/Images/DefaultPage.png")),
                         Width = 512,
@@ -120,26 +118,29 @@ namespace YClimb.Controls.Content
                         Stretch = Stretch.Uniform
                     };
 
-                    TextBlock noRoutesText = new TextBlock
+                    string messageText = _currentUser.IsAdmin == true
+                        ? "No posts yet. Be the first to create one!"
+                        : "No posts yet. Administration did not place any!";
+
+                    TextBlock noPostsText = new TextBlock
                     {
-                        Text = "No posts yet. Be the first to create one!",
+                        Text = messageText,
                         FontSize = 36,
                         FontWeight = FontWeights.DemiBold,
                         Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888888")),
-                        FontFamily = new FontFamily("�c�e������W5"),
+                        FontFamily = new FontFamily("Bahnschrift"),
                         Opacity = 0.8,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
                         Margin = new Thickness(48, -48, 0, 0)
                     };
 
-                    PostsStackPanel.Children.Add(noRoutesImage);
-                    PostsStackPanel.Children.Add(noRoutesText);
+                    PostsStackPanel.Children.Add(noPostsImage);
+                    PostsStackPanel.Children.Add(noPostsText);
                 }
             }
             catch (Exception ex)
             {
-                // Обработка ошибок
                 var errorText = new TextBlock
                 {
                     Text = $"Error loading posts: {ex.Message}",
@@ -150,7 +151,6 @@ namespace YClimb.Controls.Content
                 PostsStackPanel.Children.Add(errorText);
             }
         }
-
 
         private void ScrollToTop()
         {
@@ -173,7 +173,5 @@ namespace YClimb.Controls.Content
             }
             return null;
         }
-
-        
     }
 }

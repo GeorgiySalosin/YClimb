@@ -92,7 +92,6 @@ namespace YClimb.Controls.Content
                         Margin = new Thickness(0, 0, 0, 20)
                     };
 
-                    // Передаем текущего пользователя в ViewModel
                     var viewModel = new RouteViewModel(route, _currentUser);
                     viewModel.OnRouteDeleted += async (s, e) => await RefreshRoutes();
                     routeControl.DataContext = viewModel;

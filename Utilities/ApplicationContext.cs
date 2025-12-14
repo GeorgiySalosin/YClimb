@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using YClimb.Entities;
 
 namespace YClimb.Utilities
@@ -17,7 +18,6 @@ namespace YClimb.Utilities
         public DbSet<RouteImage> RouteImages { get; set; }
         public DbSet<Trainer> Trainers { get; set; } = null!;
         public DbSet<TrainingGroup> TrainingGroups { get; set; } = null!;
-        public DbSet<TrainingSession> TrainingSessions { get; set; } = null!;
         public DbSet<ScheduleTemplate> ScheduleTemplates { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -27,7 +27,8 @@ namespace YClimb.Utilities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Post relationships
+
+
             modelBuilder.Entity<Post>()
                 .HasOne(p => p.User)
                 .WithMany()
@@ -40,6 +41,8 @@ namespace YClimb.Utilities
                 .HasForeignKey(pi => pi.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+
+
             modelBuilder.Entity<Route>()
                 .HasOne(r => r.User)
                 .WithMany()
@@ -51,21 +54,9 @@ namespace YClimb.Utilities
                 .WithOne(i => i.Route)
                 .HasForeignKey<RouteImage>(i => i.RouteId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
 
-            // TrainingSession relationships
-            modelBuilder.Entity<TrainingSession>()
-                .HasOne(ts => ts.TrainingGroup)
-                .WithMany(tg => tg.TrainingSessions)
-                .HasForeignKey(ts => ts.TrainingGroupId)
-                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<TrainingSession>()
-                .HasOne(ts => ts.Trainer)
-                .WithMany(t => t.TrainingSessions)
-                .HasForeignKey(ts => ts.TrainerId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // ScheduleTemplate relationships
             modelBuilder.Entity<ScheduleTemplate>()
                 .HasOne(st => st.TrainingGroup)
                 .WithMany()
@@ -77,6 +68,19 @@ namespace YClimb.Utilities
                 .WithMany()
                 .HasForeignKey(st => st.TrainerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+        }
+
+
+        public async Task AfterDatabaseCreated()
+        {
+            if (!Users.Any(u => u.Nickname == "admin"))
+            {
+                var adminUser = new User("admin", null, PasswordHelper.HashPassword("1"), true);
+                Users.Add(adminUser);
+                MessageBox.Show("Для тестирования приложения была создана учетка админа (login: admin, password: 1)");
+                await SaveChangesAsync();
+            }
         }
     }
 }
