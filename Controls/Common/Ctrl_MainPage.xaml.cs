@@ -43,7 +43,7 @@ namespace YClimb.Controls.Common
         private void Button_Routes_Click(object sender, RoutedEventArgs e)
         {
             ChangeButtonTo(Button_Routes);
-            PageData.Content = new Ctrl_EmptyPage();
+            PageData.Content = new Routes(User);
         }
 
         private void Button_Events_Click(object sender, RoutedEventArgs e)

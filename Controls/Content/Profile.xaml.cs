@@ -92,7 +92,7 @@ namespace YClimb.Controls.Content
         {
             try
             {
-                _userService.UpdateUserNickname(_currentUser.Id, newNickname);
+                _userService.UpdateUserNickname(_currentUser.Id, newNickname, ((Ctrl_TextFieldProfile)uc_nickname.Content).TextBlock);
             }
             catch (Exception ex)
             {
@@ -105,7 +105,7 @@ namespace YClimb.Controls.Content
         {
             try
             {
-                _userService.UpdateUserEmail(_currentUser.Id, newEmail);
+                _userService.UpdateUserEmail(_currentUser.Id, newEmail, ((Ctrl_TextFieldProfile)uc_email.Content).TextBlock);
             }
             catch (Exception ex)
             {

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +20,7 @@ using YClimb.Utilities;
 namespace YClimb.Controls
 {
     /// <summary>
-    /// Логика взаимодействия для Ctrl_LogIn.xaml
+    /// Логика взаимодействия для Ctrl_nickname.xaml
     /// </summary>
     /// 
     public partial class Ctrl_SignUp : UserControl
@@ -39,9 +40,7 @@ namespace YClimb.Controls
         private void SignUp_Loaded(object sender, RoutedEventArgs e)
         {
             db.Database.EnsureCreated();
-            // загружаем данные из БД
             db.Users.Load();
-            // и устанавливаем данные в качестве контекста
             DataContext = db.Users.Local.ToObservableCollection();
         }
 
@@ -62,13 +61,54 @@ namespace YClimb.Controls
         {
             try
             {
-                string login = ((Ctrl_TextField)uc_nickname.Content).TB.Text;
+                string nickname = ((Ctrl_TextField)uc_nickname.Content).TB.Text;
                 string email = ((Ctrl_TextField)uc_email.Content).TB.Text;
                 string password = ((Ctrl_TextField)uc_password.Content).TB.Text;
-                if (login.Count() < 8 && password != string.Empty && email!= string.Empty)
+                string confirmPassword = ((Ctrl_TextField)uc_password_confirm.Content).TB.Text;
+
+
+                if (password == string.Empty && email == string.Empty)
                 {
-                    return true;
+                    return false;
                 }
+
+
+                if (password.Length < 8)
+                {
+                    MessageBox.Show("Password must be longer than 8 characters!");
+                    return false;
+                }
+
+                if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                {
+                    MessageBox.Show("Invalid email!");
+                    return false;
+                }
+
+
+                if (password != confirmPassword)
+                {
+                    MessageBox.Show("Passwords do not match!");
+                    return false;
+                }
+
+
+                if (db.Users.Any(u => u.Nickname == nickname))
+                {
+                    MessageBox.Show("User with this nickname already exists!");
+                    return false;
+                }
+
+
+                if (db.Users.Any(u => u.Email == email))
+                {
+                    MessageBox.Show("User with this email already exists!");
+                    return false;
+                }
+
+
+
+                return true;
             }
             catch { }
             return false;
@@ -83,24 +123,7 @@ namespace YClimb.Controls
             string password = GetPassword();
 
 
-            // Проверка паролей
-            string confirmPassword = ((Ctrl_TextField)uc_password_confirm.Content).TB.Text;
-            if (password != confirmPassword)
-            {
-                MessageBox.Show("Passwords do not match!");
-                return;
-            }
-
-            // Проверка существующего пользователя
-            bool userExists = db.Users.Any(u => u.Nickname == nickname || u.Email == email);
-            if (userExists)
-            {
-                MessageBox.Show("User with this nickname or email already exists!");
-                return;
-            }
-
-
-            // Creating a user with hashed password version!!!!
+            // Creating a user with hashed password version
 
             string hashedPassword = PasswordHelper.HashPassword(password);
             User user = new(nickname, email, hashedPassword)
@@ -108,7 +131,6 @@ namespace YClimb.Controls
                 Avatar = null,
                 IsAdmin = false
             };
-
 
             db.Users.Add(user);
             db.SaveChanges();

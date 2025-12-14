@@ -36,15 +36,11 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Style="{StaticResource BorderBase}"
-                                Width="720" Height="360" 
-                                Margin="0,10,0,10"
-                                HorizontalAlignment="Left">
-                            <Image Source="{Binding ImageSource}" 
-                                   Stretch="Uniform"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                        </Border>
+                        <Image Source="{Binding ImageSource}" 
+                                Stretch="Uniform"
+                                MaxWidth="860"
+                                Margin="0,24,0,24"
+                                HorizontalAlignment="Center"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -63,6 +59,14 @@
               FontSize="16"
               FontFamily="Bahnschrift"
               Foreground="#777"/>
+
+                <Button Content="Remove post" 
+                    Command="{Binding DeleteCommand}"
+                    Visibility="{Binding DeleteButtonVisibility}"
+                    Style="{StaticResource ActionButtonRed}"
+                    Width="120" Height="30"
+                    HorizontalAlignment="Right"
+                    Margin="256,0,16,16"/>
             </StackPanel>
         </StackPanel>
     </Border>

@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="YClimb.Controls.Common.Ctrl_RoutePost"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Border Style="{StaticResource BorderBase}" Background="#eaeafe" 
+        Width="860" Height="Auto" Margin="0,10,0,10">
+        <StackPanel Width="860" 
+                Margin="0,10,0,10"
+                Background="Transparent">
+
+            <!-- Заголовок -->
+            <TextBlock Text="{Binding Title}"
+                       FontSize="28" FontWeight="Bold"
+                       FontFamily="Bahnschrift"
+                       Margin="20,16,20,0"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       Foreground="#222222"/>
+
+            <!-- Изображение (уже масштабированное до 860px) -->
+            <Image Source="{Binding RouteImage}"
+                   Stretch="Uniform"
+                   MaxWidth="860"
+                   Margin="0,24,0,24"
+                   HorizontalAlignment="Center"/>
+
+            <!-- Информация -->
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,16">
+                <TextBlock Text="{Binding UserNickname}" 
+                           FontSize="16" 
+                           FontFamily="Bahnschrift"
+                           Foreground="#666666"/>
+                <TextBlock Text=" • " 
+                           FontSize="16"
+                           FontFamily="Bahnschrift"
+                           Foreground="#666666"/>
+                <TextBlock Text="{Binding CreatedAt, StringFormat='dd.MM.yyyy HH:mm'}" 
+                           FontSize="14"
+                           FontFamily="Bahnschrift"
+                           Foreground="#888888"/>
+
+                <Button Content="Remove route" 
+                    Command="{Binding DeleteCommand}"
+                    Visibility="{Binding DeleteButtonVisibility}"
+                    Style="{StaticResource ActionButtonRed}"
+                    Width="120" Height="30"
+                    HorizontalAlignment="Right"
+                    Margin="256,0,16,16"/>
+
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

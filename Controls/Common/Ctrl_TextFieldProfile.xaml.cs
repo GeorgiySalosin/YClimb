@@ -74,17 +74,18 @@ namespace YClimb.Controls.Common
                 Image.Source = new BitmapImage(new Uri(ButtonIconSource, UriKind.RelativeOrAbsolute));
                 TextBox.Visibility = Visibility.Hidden;
                 TextBlock.Visibility = Visibility.Visible;
+
+                // Сохраняем текст
+                if (TextBox.Text != string.Empty)
+                {
+                    Text = TextBox.Text;
+
+                    // Вызываем событие сохранения
+                    TextSaved?.Invoke(this, TextBox.Text);
+                }
             }
 
-            // Сохраняем текст
-            if (TextBox.Text != string.Empty)
-            {
-                TextBlock.Text = TextBox.Text;
-                Text = TextBox.Text; // Обновляем свойство Text
-
-                // Вызываем событие сохранения
-                TextSaved?.Invoke(this, TextBox.Text);
-            }
+            
         }
             
         

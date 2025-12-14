@@ -13,9 +13,12 @@ namespace YClimb.Utilities
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Post> Posts { get; set; } = null!;
         public DbSet<PostImage> PostImages { get; set; } = null!;
+        public DbSet<Route> Routes { get; set; }
+        public DbSet<RouteImage> RouteImages { get; set; }
         public DbSet<Trainer> Trainers { get; set; } = null!;
         public DbSet<TrainingGroup> TrainingGroups { get; set; } = null!;
         public DbSet<TrainingSession> TrainingSessions { get; set; } = null!;
+        public DbSet<ScheduleTemplate> ScheduleTemplates { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,6 +40,18 @@ namespace YClimb.Utilities
                 .HasForeignKey(pi => pi.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Route>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Route>()
+                .HasOne(r => r.Image)
+                .WithOne(i => i.Route)
+                .HasForeignKey<RouteImage>(i => i.RouteId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // TrainingSession relationships
             modelBuilder.Entity<TrainingSession>()
                 .HasOne(ts => ts.TrainingGroup)
@@ -48,6 +63,19 @@ namespace YClimb.Utilities
                 .HasOne(ts => ts.Trainer)
                 .WithMany(t => t.TrainingSessions)
                 .HasForeignKey(ts => ts.TrainerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ScheduleTemplate relationships
+            modelBuilder.Entity<ScheduleTemplate>()
+                .HasOne(st => st.TrainingGroup)
+                .WithMany()
+                .HasForeignKey(st => st.TrainingGroupId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ScheduleTemplate>()
+                .HasOne(st => st.Trainer)
+                .WithMany()
+                .HasForeignKey(st => st.TrainerId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

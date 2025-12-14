@@ -100,22 +100,41 @@ namespace YClimb.Controls.Content
                         Post = post,
                         Margin = new Thickness(0, 0, 0, 20)
                     };
+
+                    // Передаем текущего пользователя в ViewModel
+                    var viewModel = new PostViewModel(post, _currentUser);
+                    viewModel.OnPostDeleted += async (s, e) => await RefreshPosts();
+                    postControl.DataContext = viewModel;
+
                     PostsStackPanel.Children.Add(postControl);
                 }
 
                 // Если постов нет, показываем сообщение
                 if (!posts.Any())
                 {
-                    var noPostsText = new TextBlock
+                    Image noRoutesImage = new Image
                     {
-                        Text = "No posts yet. Be the first to post!",
-                        FontSize = 24,
-                        FontFamily = new FontFamily("Bahnschrift"),
+                        Source = new BitmapImage(new Uri("pack://application:,,,/Images/DefaultPage.png")),
+                        Width = 512,
+                        Height = 512,
+                        Stretch = Stretch.Uniform
+                    };
+
+                    TextBlock noRoutesText = new TextBlock
+                    {
+                        Text = "No posts yet. Be the first to create one!",
+                        FontSize = 36,
+                        FontWeight = FontWeights.DemiBold,
+                        Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888888")),
+                        FontFamily = new FontFamily("�c�e������W5"),
+                        Opacity = 0.8,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(0, 50, 0, 0)
+                        Margin = new Thickness(48, -48, 0, 0)
                     };
-                    PostsStackPanel.Children.Add(noPostsText);
+
+                    PostsStackPanel.Children.Add(noRoutesImage);
+                    PostsStackPanel.Children.Add(noRoutesText);
                 }
             }
             catch (Exception ex)

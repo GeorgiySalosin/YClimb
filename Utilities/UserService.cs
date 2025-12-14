@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -118,9 +120,17 @@ namespace YClimb.Utilities
         {
             using (var context = new ApplicationContext())
             {
+                if (context.Users.Any(u => u.Nickname == newNickname))
+                {
+                    MessageBox.Show("User with this nickname already exists!");
+                    return;
+                }
+
                 var user = context.Users.FirstOrDefault(u => u.Id == userId);
+
                 if (user != null)
                 {
+                    
                     user.Nickname = newNickname;
                     context.SaveChanges();
                 }
@@ -135,6 +145,19 @@ namespace YClimb.Utilities
         {
             using (var context = new ApplicationContext())
             {
+                if (context.Users.Any(u => u.Email == newEmail))
+                {
+                    MessageBox.Show("User with this email already exists!");
+
+                    return;
+                }
+
+                if (!Regex.IsMatch(newEmail, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                {
+                    MessageBox.Show("Invalid email!");
+                    return;
+                }
+
                 var user = context.Users.FirstOrDefault(u => u.Id == userId);
                 if (user != null)
                 {

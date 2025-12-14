@@ -24,34 +24,50 @@ namespace YClimb.Utilities
             var today = DateTime.Today;
             var endDate = today.AddDays(7);
 
-            var sessions = _context.TrainingSessions
-                .Include(ts => ts.TrainingGroup)
-                .Include(ts => ts.Trainer)
-                .Where(ts => ts.StartTime >= today && ts.StartTime < endDate)
-                .OrderBy(ts => ts.StartTime)
+            // Get all schedule templates
+            var templates = _context.ScheduleTemplates
+                .Include(st => st.TrainingGroup)
+                .Include(st => st.Trainer)
                 .ToList();
 
             var dailySchedules = new List<DailySchedule>();
 
+            // Generate schedule for next 7 days based on templates
             for (int i = 0; i < 7; i++)
             {
                 var date = today.AddDays(i);
-                var daySessions = sessions.Where(ts => ts.StartTime.Date == date).ToList();
+                var dayOfWeek = date.DayOfWeek;
+
+                // Get templates for this day of week
+                var dayTemplates = templates
+                    .Where(t => t.DayOfWeek == dayOfWeek)
+                    .ToList();
+
+                // Convert templates to actual sessions for this date
+                var sessions = dayTemplates.Select(template => new TrainingSession
+                {
+                    TrainingGroupId = template.TrainingGroupId,
+                    TrainingGroup = template.TrainingGroup,
+                    TrainerId = template.TrainerId,
+                    Trainer = template.Trainer,
+                    StartTime = date.Add(template.StartTime),
+                    EndTime = date.Add(template.EndTime)
+                }).ToList();
 
                 dailySchedules.Add(new DailySchedule
                 {
                     Date = date,
-                    Sessions = daySessions
+                    Sessions = sessions
                 });
             }
 
             return dailySchedules;
         }
 
-        // FOR INIT
+        // FOR INIT - Теперь создаем шаблоны вместо конкретных сессий
         public void InitializeSampleSchedule()
         {
-            if (_context.TrainingSessions.Any()) return;
+            if (_context.ScheduleTemplates.Any()) return;
 
             // Create sample trainers
             var trainer1 = new Trainer("Alexander Megos", "Head coach");
@@ -67,33 +83,64 @@ namespace YClimb.Utilities
             _context.TrainingGroups.AddRange(group1, group2, group3);
             _context.SaveChanges();
 
-            // Create sample sessions for the next 7 days
-            var sessions = new List<TrainingSession>();
-            var startDate = DateTime.Today;
+            // Create schedule templates for each day of week
+            var templates = new List<ScheduleTemplate>();
 
-            for (int i = 0; i < 7; i++)
+            // Monday, Wednesday, Friday
+            var mwfDays = new[] { DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday };
+            foreach (var day in mwfDays)
             {
-                var date = startDate.AddDays(i);
-
-                // Add different sessions based on day of week
-                if (date.DayOfWeek == DayOfWeek.Monday || date.DayOfWeek == DayOfWeek.Wednesday || date.DayOfWeek == DayOfWeek.Friday)
-                {
-                    sessions.Add(new TrainingSession(group1.Id, trainer1.Id, date.AddHours(9.5), date.AddHours(12))); // 9:30-13:00
-                    sessions.Add(new TrainingSession(group2.Id, trainer3.Id, date.AddHours(17), date.AddHours(22))); // 17:00-22:00
-                }
-                else if (date.DayOfWeek == DayOfWeek.Tuesday || date.DayOfWeek == DayOfWeek.Thursday)
-                {
-                    sessions.Add(new TrainingSession(group3.Id, trainer2.Id, date.AddHours(10), date.AddHours(13))); // 10:00-13:00
-                    sessions.Add(new TrainingSession(group2.Id, trainer3.Id, date.AddHours(18), date.AddHours(21))); // 18:00-21:00
-                }
-                else
-                {
-                    sessions.Add(new TrainingSession(group1.Id, trainer1.Id, date.AddHours(11), date.AddHours(14))); // 11:00-15:00
-                }
+                templates.Add(new ScheduleTemplate(day, group1.Id, trainer1.Id,
+                    TimeSpan.FromHours(9.5), TimeSpan.FromHours(12)));
+                templates.Add(new ScheduleTemplate(day, group2.Id, trainer3.Id,
+                    TimeSpan.FromHours(17), TimeSpan.FromHours(22)));
             }
 
-            _context.TrainingSessions.AddRange(sessions);
+            // Tuesday, Thursday
+            var ttDays = new[] { DayOfWeek.Tuesday, DayOfWeek.Thursday };
+            foreach (var day in ttDays)
+            {
+                templates.Add(new ScheduleTemplate(day, group3.Id, trainer2.Id,
+                    TimeSpan.FromHours(10), TimeSpan.FromHours(13)));
+                templates.Add(new ScheduleTemplate(day, group2.Id, trainer3.Id,
+                    TimeSpan.FromHours(18), TimeSpan.FromHours(21)));
+            }
+
+            // Saturday
+            templates.Add(new ScheduleTemplate(DayOfWeek.Saturday, group1.Id, trainer1.Id,
+                TimeSpan.FromHours(11), TimeSpan.FromHours(14)));
+
+            // Sunday - no sessions (day off)
+
+            _context.ScheduleTemplates.AddRange(templates);
             _context.SaveChanges();
+        }
+
+        // Метод для управления шаблонами расписания
+        public void AddScheduleTemplate(ScheduleTemplate template)
+        {
+            _context.ScheduleTemplates.Add(template);
+            _context.SaveChanges();
+        }
+
+        public void RemoveScheduleTemplate(int templateId)
+        {
+            var template = _context.ScheduleTemplates.Find(templateId);
+            if (template != null)
+            {
+                _context.ScheduleTemplates.Remove(template);
+                _context.SaveChanges();
+            }
+        }
+
+        public List<ScheduleTemplate> GetAllTemplates()
+        {
+            return _context.ScheduleTemplates
+                .Include(st => st.TrainingGroup)
+                .Include(st => st.Trainer)
+                .OrderBy(st => st.DayOfWeek)
+                .ThenBy(st => st.StartTime)
+                .ToList();
         }
     }
 
