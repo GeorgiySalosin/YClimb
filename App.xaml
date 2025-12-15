@@ -45,6 +45,15 @@
                                 <Setter Property="Background" Value="#d9d6c9"/>
                                 <Setter Property="Foreground" Value="#bcbcbc"/>
                             </Trigger>
+                            
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsEnabled" Value="False"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="border" Property="Cursor" Value="No"/>
+                            </MultiTrigger>
+                            
                         </ControlTemplate.Triggers>
                         
                     </ControlTemplate>

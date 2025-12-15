@@ -75,7 +75,7 @@ namespace YClimb.Controls.Common
         {
             Button_Feed.IsEnabled = true;
             Button_Routes.IsEnabled = true;
-            Button_Events.IsEnabled = true;
+            Button_Events.IsEnabled = false;
             Button_Schedule.IsEnabled = true;
             Button_Profile.IsEnabled = true;
 

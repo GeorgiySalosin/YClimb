@@ -78,7 +78,7 @@ namespace YClimb.Utilities
             {
                 var adminUser = new User("admin", null, PasswordHelper.HashPassword("1"), true);
                 Users.Add(adminUser);
-                MessageBox.Show("Для тестирования приложения была создана учетка админа (login: admin, password: 1)");
+                MessageBox.Show("Для тестирования приложения была создана учетка админа \n\t(login: admin, password: 1)");
                 await SaveChangesAsync();
             }
         }

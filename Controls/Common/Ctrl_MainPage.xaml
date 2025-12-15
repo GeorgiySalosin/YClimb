@@ -36,7 +36,8 @@
                     Content="Events"
                     Width="200" Height="48"
                     Click="Button_Events_Click"        
-                    Margin="0,26,0,0"/>
+                    Margin="0,26,0,0"
+                    Background="#77aaaabb" BorderBrush="#777777"/>
 
                 <Button Style="{StaticResource MenuButton}"
                     Name="Button_Schedule"
@@ -51,9 +52,7 @@
                         Width="100" Height="100" 
                         Margin="0,64,0,0" 
                         HorizontalAlignment="Center">
-                    <!--<Border.Background>
-                        <ImageBrush ImageSource="/Images/DefaultUser.jpg"/>
-                    </Border.Background>-->
+                    
                 </Border>
 
                 <Button Style="{StaticResource MenuButton}"
